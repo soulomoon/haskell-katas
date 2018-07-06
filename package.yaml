@@ -1,0 +1,53 @@
+name:                katas
+version:             0.1.0.0
+github:              "soulomoon/katas"
+license:             BSD3
+author:              "soulomoon <fwy996602672@gmail.com>"
+maintainer:          "fwy996602672@gmail.com"
+copyright:           "2018 soulomoon"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/soulomoon/katas#readme>
+
+dependencies:
+- base >= 4.7 && < 5
+- ghci-pretty
+- containers
+
+
+library:
+  source-dirs: src
+
+executables:
+  katas-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - katas
+
+tests:
+  katas-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - katas
+    - hspec
+    - QuickCheck
