@@ -19,7 +19,6 @@ main = hspec spec
 
 spec :: Spec
 spec = do
-  describe "solution" $ do
     it "testing size 5" $ ShowSpiral (spiralize 5) `shouldBe` ShowSpiral
       [[1,1,1,1,1],
        [0,0,0,0,1],
