@@ -25,8 +25,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = do
-    describe "FunctionEvaluator" $ do
+spec = describe "FunctionEvaluator" $ do
     it "should work for some basic tests" $ do
         evaluateFunction factorial 5    `shouldBe` 120
         evaluateFunction factorial 20   `shouldBe` 2432902008176640000
