@@ -6,12 +6,14 @@ import qualified Katas.Parentheses
 import qualified Katas.SumByFactors
 import qualified Katas.MiddlePermutation
 import qualified Katas.FunctionEvaluator
+import qualified Katas.FundamentalMonads
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.FundamentalMonads" Katas.FundamentalMonads.spec
     describe "Katas.FunctionEvaluator" Katas.FunctionEvaluator.spec
     describe "Katas.MiddlePermutation" Katas.MiddlePermutation.spec
     describe "Katas.Rule30" Katas.Rule30.spec
