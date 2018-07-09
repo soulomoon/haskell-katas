@@ -20,22 +20,26 @@ data Reader s a = Reader {runReader :: s -> a }
 data Writer w a = Writer {runWriter :: (w, a)}
 
 instance Monad Identity where
-  return = undefined
-  (Identity v) >>= f = undefined
+  return = Identity
+  (Identity v) >>= f = f v
 
 instance Monad Maybe where
-  return = undefined
-  Nothing >>= f = undefined
-  (Just v) >>= f = undefined
+  return = Just
+  Nothing >>= f = Nothing
+  (Just v) >>= f = f v
 
 instance Monad (State s) where
-  return = undefined
-  (State g) >>= f = undefined
+  return x = State $ \s -> (x, s)
+  (State g) >>= f = State $ \s -> let (State ng) = f a 
+                                      (a, ns) = (g s)
+                                  in ng ns
 
 instance Monad (Reader s) where
-  return = undefined
-  (Reader g) >>= f = undefined
+  return x = Reader $ \s -> x
+  (Reader g) >>= f = Reader $ \s -> let (Reader ng) = f (g s)
+                                    in ng s
 
 instance Monoid w => Monad (Writer w) where
-  return = undefined
-  (Writer (s, v)) >>= f = undefined
+  return a = Writer (mempty, a)
+  (Writer (s, v)) >>= f = let Writer (ns, nv) = f v 
+                          in Writer (mappend ns s, nv)
