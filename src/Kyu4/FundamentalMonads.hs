@@ -36,10 +36,8 @@ instance Monad (State s) where
 
 instance Monad (Reader s) where
   return x = Reader $ \s -> x
-  (Reader g) >>= f = Reader $ \s -> let (Reader ng) = f (g s)
-                                    in ng s
+  (Reader g) >>= f = Reader $ \s -> let (Reader ng) = f (g s) in ng s
 
 instance Monoid w => Monad (Writer w) where
   return a = Writer (mempty, a)
-  (Writer (s, v)) >>= f = let Writer (ns, nv) = f v 
-                          in Writer (mappend ns s, nv)
+  (Writer (s, v)) >>= f = let Writer (ns, nv) = f v in Writer (mappend ns s, nv)

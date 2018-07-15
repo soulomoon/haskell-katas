@@ -7,12 +7,14 @@ import qualified Katas.SumByFactors
 import qualified Katas.MiddlePermutation
 import qualified Katas.FunctionEvaluator
 import qualified Katas.FundamentalMonads
+import qualified Katas.IntegerToNestedStructure
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.IntegerToNestedStructure" Katas.IntegerToNestedStructure.spec
     describe "Katas.FundamentalMonads" Katas.FundamentalMonads.spec
     describe "Katas.FunctionEvaluator" Katas.FunctionEvaluator.spec
     describe "Katas.MiddlePermutation" Katas.MiddlePermutation.spec
