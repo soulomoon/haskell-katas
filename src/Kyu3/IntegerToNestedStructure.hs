@@ -8,8 +8,6 @@ encode n = sum $ zipWith (*) (map (2^) [0, 1..]) (tail $ dropWhile (==0) $ rever
     where 
         ps = M.fromAscList $ zip (primesTo n) [0 ..]
         encodeIter = concatMap mapToOrder . primeFactors
-        mapToOrder 0 = [0]
-        mapToOrder 1 = [1]
         mapToOrder 2 = [1, 0]
         mapToOrder m = [1] ++ encodeIter (ps M.! m) ++ [0]
 
