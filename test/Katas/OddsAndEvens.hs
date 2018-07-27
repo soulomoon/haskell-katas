@@ -8,7 +8,7 @@ main :: IO ()
 main = hspec spec
 
 spec :: Spec
-spec = do
+spec = describe "OddsAndEvens" $ do
   describe "(*)PlusOne" $ do
     it "evenPlusOne works" $ do
       fromOdd (S.evenPlusOne two) `shouldBe` 3
