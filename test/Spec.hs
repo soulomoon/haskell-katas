@@ -11,12 +11,14 @@ import qualified Katas.IntegerToNestedStructure
 import qualified Katas.OddsAndEvens
 import qualified Katas.Church
 import qualified Katas.ChurchNumbers
+import qualified Katas.IsomorphString
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.IsomorphString" Katas.IsomorphString.spec
     describe "Katas.ChurchNumbers" Katas.ChurchNumbers.spec
     describe "Katas.Church" Katas.Church.spec
     describe "Katas.OddsAndEvens" Katas.OddsAndEvens.spec
