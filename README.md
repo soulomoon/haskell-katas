@@ -1,3 +1,4 @@
+![](https://www.codewars.com/users/soulomoon/badges/large)
 # Katas
 Hoping someone could teamup with me  
 [CodeWars profile](https://www.codewars.com/users/soulomoon/stats)  
