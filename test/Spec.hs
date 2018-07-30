@@ -15,12 +15,14 @@ import qualified Katas.IsomorphString
 import qualified Katas.Isomorphism
 import qualified Katas.ISO
 import qualified Katas.Isogram
+import qualified Katas.ALaCarte
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.ALaCarte" Katas.ALaCarte.spec
     describe "Katas.Isogram" Katas.Isogram.spec
     describe "Katas.ISO" Katas.ISO.spec
     describe "Katas.Isomorphism" Katas.Isomorphism.spec
