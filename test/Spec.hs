@@ -1,4 +1,5 @@
 import Test.Hspec
+
 import qualified Katas.Rule30
 import qualified Katas.Sieve
 import qualified Katas.Spiral
@@ -16,12 +17,14 @@ import qualified Katas.Isomorphism
 import qualified Katas.ISO
 import qualified Katas.Isogram
 import qualified Katas.ALaCarte
+import qualified Katas.PC
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.PC" Katas.PC.spec
     describe "Katas.ALaCarte" Katas.ALaCarte.spec
     describe "Katas.Isogram" Katas.Isogram.spec
     describe "Katas.ISO" Katas.ISO.spec
