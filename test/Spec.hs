@@ -19,12 +19,15 @@ import qualified Katas.Isogram
 import qualified Katas.ALaCarte
 import qualified Katas.PC
 import qualified Katas.ChurchNumber
+import qualified Katas.AlphabeticAnagrams
+
 
 main :: IO ()
 main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.AlphabeticAnagrams" Katas.AlphabeticAnagrams.spec
     describe "Katas.ChurchNumber" Katas.ChurchNumber.spec
     describe "Katas.PC" Katas.PC.spec
     describe "Katas.ALaCarte" Katas.ALaCarte.spec
