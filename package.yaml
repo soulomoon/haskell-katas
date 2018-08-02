@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - ghci-pretty
 - containers
+- contravariant
 
 
 library:
@@ -38,6 +39,7 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - katas
+    - contravariant
 
 tests:
   katas-test:
