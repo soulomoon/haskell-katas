@@ -21,6 +21,7 @@ import qualified Katas.PC
 import qualified Katas.ChurchNumber
 import qualified Katas.AlphabeticAnagrams
 import qualified Katas.ScottEncoding
+import qualified Katas.PolyvariadicFunctions
 
 
 main :: IO ()
@@ -28,6 +29,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.PolyvariadicFunctions" Katas.PolyvariadicFunctions.spec
     describe "Katas.ScottEncoding" Katas.ScottEncoding.spec
     describe "Katas.AlphabeticAnagrams" Katas.AlphabeticAnagrams.spec
     describe "Katas.ChurchNumber" Katas.ChurchNumber.spec
