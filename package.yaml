@@ -28,6 +28,8 @@ dependencies:
 
 library:
   source-dirs: src
+  dependencies:
+  - integer-gmp
 
 executables:
   katas-exe:
@@ -38,8 +40,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - katas
     - contravariant
+    - hspec
+    - QuickCheck
+    - integer-gmp
 
 tests:
   katas-test:
