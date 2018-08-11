@@ -23,6 +23,7 @@ import qualified Katas.AlphabeticAnagrams
 import qualified Katas.ScottEncoding
 import qualified Katas.PolyvariadicFunctions
 import qualified Katas.Singletons
+import qualified Katas.Faberge
 
 
 main :: IO ()
@@ -30,6 +31,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.Faberge" Katas.Faberge.spec
     describe "Katas.Singletons" Katas.Singletons.spec
     describe "Katas.PolyvariadicFunctions" Katas.PolyvariadicFunctions.spec
     describe "Katas.ScottEncoding" Katas.ScottEncoding.spec
