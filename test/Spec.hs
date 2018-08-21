@@ -25,6 +25,7 @@ import qualified Katas.PolyvariadicFunctions
 import qualified Katas.Singletons
 import qualified Katas.Faberge
 import qualified Katas.MicroLens
+import qualified Katas.Coroutine
 
 
 main :: IO ()
@@ -32,6 +33,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.Coroutine" Katas.Coroutine.spec
     describe "Katas.MicroLens" Katas.MicroLens.spec
     describe "Katas.Faberge" Katas.Faberge.spec
     describe "Katas.Singletons" Katas.Singletons.spec
