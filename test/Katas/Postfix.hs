@@ -1,4 +1,4 @@
-module Postfix.Tests where
+module Katas.Postfix where
 
 import Test.Hspec
 import Test.QuickCheck

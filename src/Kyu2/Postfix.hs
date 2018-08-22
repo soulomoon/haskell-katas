@@ -1,4 +1,4 @@
-module Postfix where
+module Kyu2.Postfix where
 
 begin action = action []
 push acc n action = action (n:acc)
