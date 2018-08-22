@@ -27,6 +27,7 @@ import qualified Katas.Faberge
 import qualified Katas.MicroLens
 import qualified Katas.Coroutine
 import qualified Katas.FoldingThroughAFixedPoint
+import qualified Katas.Postfix
 
 
 main :: IO ()
@@ -34,6 +35,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.Postfix" Katas.Postfix.spec
     describe "Katas.FoldingThroughAFixedPoint" Katas.FoldingThroughAFixedPoint.spec
     describe "Katas.Coroutine" Katas.Coroutine.spec
     describe "Katas.MicroLens" Katas.MicroLens.spec
