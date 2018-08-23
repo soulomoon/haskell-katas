@@ -7,3 +7,9 @@ A newbie trying the best to improve haskell skills and programming skills overal
 Using Stack Hello World template for the skeleton  
 # Test
 Hspec (same as codeWars)  
+# timeline
+---------------------  
+Jul 28 -> 3 kyu  
+Aug  1 -> 2 kyu  
+Aug 23 -> 1 kyu  
+---------------------  
