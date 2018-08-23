@@ -6,7 +6,11 @@ import Kyu2.Postfix
 
 
 
-main = hspec $ do
+main :: IO ()
+main = hspec spec
+
+spec :: Spec
+spec = do
   describe "Programs" $ do
     it "Simple Programs" $ do
       (begin push 5 end) `shouldBe` 5
