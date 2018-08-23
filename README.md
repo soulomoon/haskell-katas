@@ -8,8 +8,8 @@ Using Stack Hello World template for the skeleton
 # Test
 Hspec (same as codeWars)  
 # timeline
----------------------  
-Jul 28 -> 3 kyu  
-Aug  1 -> 2 kyu  
-Aug 23 -> 1 kyu  
----------------------  
+|month|date|pointer|kyu|
+---|----|-----|-----
+Jul| 28 | -> | 3 kyu
+Aug| 1  | -> | 2 kyu 
+Aug| 23 | -> | 1 kyu 
