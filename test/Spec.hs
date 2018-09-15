@@ -29,6 +29,7 @@ import qualified Katas.Coroutine
 import qualified Katas.FoldingThroughAFixedPoint
 import qualified Katas.Postfix
 import qualified Katas.InfiniteDigitalString
+import qualified Katas.Imperative
 
 
 main :: IO ()
@@ -36,6 +37,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.Imperative" Katas.Imperative.spec
     describe "Katas.InfiniteDigitalString" Katas.InfiniteDigitalString.spec
     describe "Katas.Postfix" Katas.Postfix.spec
     describe "Katas.FoldingThroughAFixedPoint" Katas.FoldingThroughAFixedPoint.spec
