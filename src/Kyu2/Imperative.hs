@@ -1,39 +1,64 @@
-module Kyu2.Imperative (
-) where
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
--- import Control.Monad
+module Kyu2.Imperative where
 
--- data SomeMonad a  = SomeMonad a
+import qualified Data.Map as M
+import Control.Monad.State
+import Control.Monad
 
--- instance Applicative SomeMonad where
---     pure = return 
---     (<*>) = ap
+newtype SomeMonad a = SomeMonad (State (Integer, M.Map Integer Integer) a) deriving (Applicative, Monad)
+data SomeVariable = SomeVariable {getInt :: Integer} | Constance Integer
 
--- instance Monad SomeMonad where
---     return = SomeMonad
---     (SomeMonad a) >>= f = f a
+instance Functor SomeMonad where
+  fmap f (SomeMonad st)= SomeMonad (fmap f st)
 
--- def :: SomeMonad Integer -> Integer
--- def (SomeMonad n) = n
--- var :: Integer -> SomeMonad Integer
--- var = return
--- lit :: Integer -> SomeMonad Integer
--- lit = var
+makeST = SomeMonad . state
+runST (SomeMonad m) = runState m
+evalST (SomeMonad m) = evalState m
+execST (SomeMonad m) = execState m
 
--- while :: SomeMonad Integer -> (Integer -> Bool) -> SomeMonad () -> SomeMonad ()
--- while r f act = do
---     let c = f r
---     when c $ act >> while r f act 
+def :: SomeMonad SomeVariable -> Integer
+def m = case runST m (0, M.empty) of 
+          (SomeVariable k, (_, mp)) -> mp M.! k
+          (Constance k, _) -> k
 
--- (+=), (-=), (*=) ::SomeMonad Integer -> Integer -> SomeMonad ()
--- a += b = var $ a + b
--- a -= b = var $ a - b
--- a *= b = var $ a * b
+var :: Integer -> SomeMonad SomeVariable
+var v = makeST (\(k, mp) -> (SomeVariable k, (k+1, M.insert k v mp)))
+lit :: Integer -> SomeVariable
+lit = Constance
 
--- main = do
---     a <- var 1
---     while a (>0) $ do 
---         a -= 1
---         return ()
---     return a
+while :: SomeVariable -> (Integer -> Bool) -> SomeMonad () -> SomeMonad ()
+while sv f m = makeST (\(k, mp) -> if f $ mp M.! getInt sv 
+                                      then ((), execST (while sv f m) (execST m (k, mp))) 
+                                      else ((), (k, mp)))
 
+getValue (Constance c) mp = c
+getValue (SomeVariable c) mp = mp M.! c
+
+(+=), (-=), (*=) :: SomeVariable -> SomeVariable -> SomeMonad ()
+(SomeVariable k) += y = makeST (\(m, mp) -> ((), (m, M.insert k ((mp M.! k) + getValue y mp) mp)))
+_ += _ = error "wrong parametor"
+
+(SomeVariable k) -= y = makeST (\(m, mp) -> ((), (m, M.insert k ((mp M.! k) - getValue y mp) mp)))
+_ -= _ = error "wrong parametor"
+
+(SomeVariable k) *= y = makeST (\(m, mp) -> ((), (m, M.insert k ((mp M.! k) * getValue y mp) mp)))
+_ *= _ = error "wrong parametor"
+
+factorial :: Integer -> Integer
+factorial n = def $ do
+  result <- var 1
+  i      <- var n
+  while i (>0) $ do
+    result *= i
+    i      -= lit 1
+  return result
+
+com = def $ do
+  a <- var 1
+  b <- var 2
+  a += b
+  a += lit 1
+  return a 
+-- should be 4
+main = print $ factorial 5

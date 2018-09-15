@@ -24,6 +24,7 @@ dependencies:
 - ghci-pretty
 - containers
 - contravariant
+- mtl
 
 
 library:
