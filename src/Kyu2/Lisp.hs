@@ -1,3 +1,4 @@
+{-# LANGUAGE LambdaCase #-}
 module Kyu2.Lisp where
 
 import           Text.ParserCombinators.Parsec
@@ -5,6 +6,8 @@ import           Text.ParserCombinators.Parsec
 import           Control.Monad
 import           Data.Maybe
 import           Data.List
+import           Data.Monoid
+import           Data.Semigroup
 
 
 data AST = I32 Int
@@ -73,59 +76,27 @@ preludeFunctions =
   , ("*"      , lenWrapLg 1 $ i32ManyI (*))
   , ("-"      , lenWrapLg 2 $ i32ManyI (-))
   , ("/"      , lenWrapLg 2 i32div)
-  , ("^"      , lenWrapEg 2 $ i32ManyI (^))
+  , ("^"      , lenWrap 2 2 $ i32ManyI (^))
   , (">"      , i32ManyB (>))
   , ("<"      , i32ManyB (<))
-  , ("!"      , booNegate)
+  , ("!"      , \case [Boo x] -> Boo $ not x;_->Err)
   , ("list"   , Lst)
-  , ("size"   , sizeI)
-  , ("reverse", reverseE)
-  , (".."     , range)
-  , ("==", lenWrapLg 2 $ \xs -> Boo $ all (== head xs) xs)
+  , ("size"   , \case [Lst xs] -> I32 $ length xs;_->Err)
+  , ("reverse", \case [Lst xs]-> Lst $ reverse xs;_->Err)
+  , (".."     , \case [I32 a, I32 b] -> Lst $ map I32 [a .. b];_->Err)
+  , ("=="     , lenWrapLg 2 $ \xs -> Boo $ all (== head xs) xs)
   , (">="     , i32ManyB (>=))
   , ("<="     , i32ManyB (<=))
   , ("!="     , i32ManyB (/=))
-  , ("if"     , ifE)
+  , ("if"     , \case (Boo x:xs)->(if x then head else head.init) (xs++[Nul, Err]);_->Err)
   ]
  where
-
-  sizeI :: PreludeFunc
-  sizeI [Lst xs] = I32 $ length xs
-  sizeI _        = Err
-
-  ifE :: PreludeFunc
-  ifE [Boo x, x1, x2] = if x then x1 else x2
-  ifE [Boo x, x1]     = if x then x1 else Nul
-  ifE _               = Err
-
-  reverseE :: PreludeFunc
-  reverseE [Lst xs] = Lst $ reverse xs
-  reverseE _        = Err
-
-  range :: PreludeFunc
-  range [I32 a, I32 b] = Lst $ map I32 [a .. b]
-  range _              = Err
-
-  booNegate [Boo x] = Boo $ not x
-  booNegate _       = Err
-
   i32ManyB f [I32 x, I32 y] = Boo $ f x y
   i32ManyB f _              = Err
 
   i32BinaryI :: (Int -> Int -> Int) -> BinaryFunc
   i32BinaryI f (I32 x) (I32 y) = I32 $ f x y
   i32BinaryI f _       _       = Err
-
-  lenWrapEg :: Int -> PreludeFunc -> PreludeFunc
-  lenWrapEg l = lenWrap l l
-
-  lenWrapLg :: Int -> PreludeFunc -> PreludeFunc
-  lenWrapLg l = lenWrap l maxBound
-
-  lenWrap :: Int -> Int -> PreludeFunc -> PreludeFunc
-  lenWrap lower upper f args | (len >= lower) && (len <= upper) = f args
-                             | otherwise                        = Err
-    where len = length args
 
   i32ManyI :: (Int -> Int -> Int) -> PreludeFunc
   i32ManyI f [x         ] = x
@@ -135,6 +106,14 @@ preludeFunctions =
                               | y == 0    = Err
   i32div [x] = x
   i32div _   = Err
+
+  lenWrap :: Int -> Int -> PreludeFunc -> PreludeFunc
+  lenWrap lower upper f args | (len >= lower) && (len <= upper) = f args
+                             | otherwise                        = Err
+    where len = length args
+  lenWrapLg :: Int -> PreludeFunc -> PreludeFunc
+  lenWrapLg l = lenWrap l maxBound
+
 
 
 parseF :: (AST -> Maybe a) -> String -> Maybe a
@@ -164,13 +143,11 @@ lispEval :: String -> Maybe AST
 lispEval = parseF evalE
  where
   evalE :: AST -> Maybe AST
-  evalE (Nod (Sym s) xs) = Just $ fromMaybe Err $ listToMaybe $ mapMaybe
-    f
-    preludeFunctions
+  evalE (Nod (Sym s) xs) = getAlt $ foldMap f preludeFunctions `mplus` Alt (Just Err)
    where
-    f :: (String, [AST] -> AST) -> Maybe AST
-    f (t, func) | t == s    = func <$> mapM evalE xs
-                | otherwise = Nothing
+    f :: (String, [AST] -> AST) -> Alt Maybe AST
+    f (t, func) | t == s    = func <$> mapM (Alt . evalE) xs
+                | otherwise = Alt Nothing
   evalE (Nod _ _) = Nothing
   evalE a         = Just a
 
