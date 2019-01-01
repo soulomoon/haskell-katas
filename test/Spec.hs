@@ -30,6 +30,7 @@ import qualified Katas.FoldingThroughAFixedPoint
 import qualified Katas.Postfix
 import qualified Katas.InfiniteDigitalString
 import qualified Katas.Imperative
+import qualified Katas.Lisp
 
 
 main :: IO ()
@@ -37,6 +38,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.Lisp" Katas.Imperative.spec
     describe "Katas.Imperative" Katas.Imperative.spec
     describe "Katas.InfiniteDigitalString" Katas.InfiniteDigitalString.spec
     describe "Katas.Postfix" Katas.Postfix.spec
@@ -67,5 +69,3 @@ spec = do
     describe "Katas.Spiral" Katas.Spiral.spec
     describe "Katas.Parentheses" Katas.Parentheses.spec
     describe "Katas.SumByFactors" Katas.SumByFactors.spec
-    
-    

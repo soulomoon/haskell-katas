@@ -25,6 +25,8 @@ dependencies:
 - containers
 - contravariant
 - mtl
+- hspec
+- parsec
 
 
 library:
