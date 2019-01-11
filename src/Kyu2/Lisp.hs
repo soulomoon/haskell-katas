@@ -1,4 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
+
+
 module Kyu2.Lisp where
 
 import           Text.ParserCombinators.Parsec
@@ -7,7 +9,6 @@ import           Control.Monad
 import           Data.Maybe
 import           Data.List
 import           Data.Monoid
-import           Data.Semigroup
 
 
 data AST = I32 Int
@@ -151,3 +152,4 @@ lispEval = parseF evalE
   evalE (Nod _ _) = Nothing
   evalE a         = Just a
 
+  
