@@ -30,14 +30,9 @@ reflexive :: Natural n -> Equal n n
 reflexive NumZ = EqlZ
 reflexive (NumS n) = EqlS $ reflexive n
 
--- | if a = b, then b = a.
-symmetric :: Equal a b -> Equal b a
-symmetric EqlZ = EqlZ
-symmetric (EqlS eq) = EqlS $ symmetric eq
-
 -- | if a = b and b = c, then a = c.
 transitive :: Equal a b -> Equal b c -> Equal a c
-transitive EqlZ EqlZ = EqlZ 
+transitive EqlZ EqlZ = EqlZ
 transitive (EqlS eq1) (EqlS eq2) = EqlS $ transitive eq1 eq2
 
 oppositeSide :: Natural a -> Natural b -> Equal (S (a :+: b)) (a :+: S b)
