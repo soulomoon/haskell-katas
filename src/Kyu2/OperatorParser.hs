@@ -48,41 +48,18 @@ op s a = do
 -- | And return a parser for operator expressions that yields a parse tree. 
 parseOperators :: (Show a, Show b) => [Associativity [ReadP a]] -> ReadP b -> ReadP (OpTree a b)
 parseOperators xss pb = parseOperators' xss <* skipSpaces where
-  parseOperators' [] = pfail
-  parseOperators' (x:xs) = do 
-    x <- parseTermOrLower
-    parseOperator x
+  parseOperators' [] = Term <$> pb
+  parseOperators' (x:xs) = parseTermOrLower >>= parseFunc
           where 
-              pa = (skipSpaces >> case x of
-                     (L pas) -> choice pas
-                     (R pas) -> choice pas
-                     (NoAssociativity pas) -> choice pas)
-                   <* skipSpaces
-
-              parseOperator = case x of
-                     (L pas) -> parseL1
-                     (R pas) -> parseR1
-                     (NoAssociativity pas) -> parseN1
-
-              parseN1 x =  parseN x <++ return x
-              parseN x = do
-                f <- pa
-                y <- parseOperators' xs 
-                return $ Op x f y
-
-              parseR x = do
-                f <- pa
-                y <- do {z <- parseTermOrLower; parseR1 z};
-                return $ Op x f y
-              parseR1 x = parseR x <++ return x
-
-              parseL x = do
-                f <- pa
-                y <- parseTermOrLower
-                parseL1 $ Op x f y
-              parseL1 x = parseL x <++ return x
-
-              parseTermOrLower = between (char '(' >> skipSpaces) (skipSpaces >> char ')') (parseOperators' xss) +++ parseOperators' xs <++ (Term <$> pb)
+              (parseFunc, pa) = case x of
+                     (L pas) -> (parseL, choice pas)
+                     (R pas) -> (parseR, choice pas)
+                     (NoAssociativity pas) -> (parseN, choice pas)
+              paa = between skipSpaces skipSpaces pa
+              parseN x = Op x <$> paa <*> parseOperators' xs <|> return x
+              parseR x = Op x <$> paa <*> do {z <- parseTermOrLower; parseR z} <|> return x
+              parseL x = (Op x <$> paa <*> parseTermOrLower >>= parseL) <|> return x
+              parseTermOrLower = between (char '(' >> skipSpaces) (skipSpaces >> char ')') (parseOperators' xss) <|> parseOperators' xs
 
 
 
