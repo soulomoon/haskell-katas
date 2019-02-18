@@ -111,6 +111,10 @@ main = hspec $ do
         it "parses a single term" $
             arithParser "(12)" `shouldBe` "12"
         it "parses expressions with no whitespace" $
+            arithParser "1+1" `shouldBe` "(1+1)"
+        it "parses expressions with latter square" $
+            arithParser "1+((2 +1)) " `shouldBe` "(1+(2+1))"
+        it "parses expressions with upfirst square" $
             arithParser "(1+(2 +1))+1 " `shouldBe` "((1+(2+1))+1)"
         it "fails if there is preceding whitespace" $
             arithParser "  1 + 1" `shouldBe` ""
