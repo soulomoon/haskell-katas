@@ -115,7 +115,7 @@ main = hspec $ do
         it "parses expressions with latter square" $
             arithParser "1+((2 +1)) " `shouldBe` "(1+(2+1))"
         it "parses expressions with upfirst square" $
-            arithParser "(1+(2 +1))+1 " `shouldBe` "((1+(2+1))+1)"
+            arithParser "1+(2 +1)+1 " `shouldBe` "((1+(2+1))+1)"
         it "fails if there is preceding whitespace" $
             arithParser "  1 + 1" `shouldBe` ""
         it "fails on incomplete expressions" $ do
