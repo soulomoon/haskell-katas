@@ -57,10 +57,10 @@ parseOperators xss pb = parseOperators' xss <* skipSpaces where
                      (NoAssociativity pas) -> (parseN, choice pas)
               strip = between skipSpaces skipSpaces
               brackets = between (char '(') (char ')') . strip
-              paa = strip pa
-              parseN x = Op x <$> paa <*> parseOperators' xs <|> return x
-              parseR x = Op x <$> paa <*> do {z <- parseTermOrLower; parseR z} <|> return x
-              parseL x = (Op x <$> paa <*> parseTermOrLower >>= parseL) <|> return x
+              paa x = Op x <$> strip pa
+              parseN x = paa x <*> parseOperators' xs <|> return x
+              parseR x = paa x <*> (parseTermOrLower >>= parseL) <|> return x
+              parseL x = (paa x <*> parseTermOrLower >>= parseL) <|> return x
               parseTermOrLower = brackets (parseOperators' xss) <|> parseOperators' xs
 
 
