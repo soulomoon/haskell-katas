@@ -49,7 +49,9 @@ op s a = do
 parseOperators :: (Show a, Show b) => [Associativity [ReadP a]] -> ReadP b -> ReadP (OpTree a b)
 parseOperators xss pb = parseOperators' xss <* skipSpaces where
   parseOperators' [] = Term <$> pb
-  parseOperators' (x:xs) = parseTermOrLower >>= parseFunc
+  parseOperators' (x:xs) = do
+    (s, x) <- gather parseTermOrLower 
+    parseFunc $ traceShow s x
           where 
               (parseFunc, pa) = case x of
                      (L pas) -> (parseL, choice pas)
@@ -61,7 +63,7 @@ parseOperators xss pb = parseOperators' xss <* skipSpaces where
               parseN x = paa x <*> parseOperators' xs <|> return x
               parseR x = paa x <*> (parseTermOrLower >>= parseL) <|> return x
               parseL x = (paa x <*> parseTermOrLower >>= parseL) <|> return x
-              parseTermOrLower = brackets (parseOperators' xss) <|> parseOperators' xs
+              parseTermOrLower = parseOperators' xs <++ brackets (parseOperators' xss)
 
 
 
@@ -115,7 +117,7 @@ main = hspec $ do
         it "parses expressions with latter square" $
             arithParser "1+((2 +1)) " `shouldBe` "(1+(2+1))"
         it "parses expressions with upfirst square" $
-            arithParser "1+(2 +1)+1 " `shouldBe` "((1+(2+1))+1)"
+            arithParser "(2 &&1)+1 " `shouldBe` "((2&&1)+1)"
         it "fails if there is preceding whitespace" $
             arithParser "  1 + 1" `shouldBe` ""
         it "fails on incomplete expressions" $ do
