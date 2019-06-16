@@ -124,23 +124,15 @@ term = do
   eof
   return r
 
-
-expr0 = "1.1%1.2"
--- expr1 = "if false then 0 else succ (pred (succ 0))"
--- expr2 = "if true then succ 0 else -1"
-
 parseTerm :: String -> Either ParseError Term
 parseTerm = parse term "Error"
-
 
 type Interpreter = Env
 type Result = Maybe Double 
 type IResult = Either String (Result, Interpreter) 
-
 type Env = (M.Map Identifier Value)
 data Value = ValueF Function | ValueN Number
   deriving (Show)
-
 type SResult a = StateT Env (Either String) a
 
 putVal :: Identifier -> Value -> SResult Result
@@ -314,13 +306,6 @@ newInterpreter = M.empty
 
 main :: IO ()
 main = do
-  -- print $ execStateT 
-  --   (do 
-  --     putVal "x" (ValueN 10)
-  --     putVal "y" (ValueN 10)
-  --     putVal "z" (ValueN 10)
-  --   ) M.empty
-  -- return ()
   ppt "x = 7" M.empty
     >>= ppt "x + 6"
     >>= ppt "x + 6" 
@@ -336,6 +321,4 @@ main = do
     >>= ppt "avg a b"
     >>= ppt "fn echo x => x"
     >>= ppt "add echo 4 echo 3"
-  -- i <- ppt "fn inc x => x + 2.0 / 1" i
-  -- ppt expr1
   return ()
