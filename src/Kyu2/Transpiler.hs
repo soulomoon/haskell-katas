@@ -1,4 +1,4 @@
-module Transpiler where
+module Kyu2.Transpiler where
 
 import Data.List
 import Data.Char

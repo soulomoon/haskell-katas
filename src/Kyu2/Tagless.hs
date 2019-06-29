@@ -1,6 +1,6 @@
 {-# LANGUAGE RankNTypes #-}
 
-module Tagless where
+module Kyu2.Tagless where
 
 import Prelude hiding (and, or)
 

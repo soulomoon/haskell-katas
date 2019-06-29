@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveFunctor #-}
 
-module OperatorParser
+module Kyu2.OperatorParser
     ( OpTree(..)
     , Associativity(..)
     , op

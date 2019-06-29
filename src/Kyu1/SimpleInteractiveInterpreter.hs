@@ -1,4 +1,4 @@
-module SimpleInteractiveInterpreter where
+module Kyu1.SimpleInteractiveInterpreter where
 
 
 import           Text.Parsec

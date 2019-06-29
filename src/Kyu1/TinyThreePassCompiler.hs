@@ -1,4 +1,4 @@
-module TinyThreePassCompiler where
+module Kyu1.TinyThreePassCompiler where
 
 import qualified Text.Parsec as P
 import Control.Monad.Identity
