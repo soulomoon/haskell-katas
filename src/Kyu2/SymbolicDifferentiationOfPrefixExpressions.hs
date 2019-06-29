@@ -133,7 +133,22 @@ data Term = Imm Integer
     | Add Term Term
     | Sub Term Term
     | Div Term Term
-    deriving Show
+
+wrap x = "(" ++ x ++ ")"
+
+instance Show Term where
+  show X = "x"
+  show (Cos x) = wrap $ "cos " ++ show x
+  show (Sin x) = wrap $ "sin " ++ show x
+  show (Tan x) = wrap $ "tan " ++ show x
+  show (Exp x) = wrap $ "exp " ++ show x
+  show (Ln x) = wrap $ "ln " ++ show x
+
+  show (Pow x y) = wrap $ "^ " ++ show x ++ " " ++ show y
+  show (Mul x y) = wrap $ "* " ++ show x ++ " " ++ show y
+  show (Add x y) = wrap $ "+ " ++ show x ++ " " ++ show y
+  show (Sub x y) = wrap $ "- " ++ show x ++ " " ++ show y
+  show (Div x y) = wrap $ "/ " ++ show x ++ " " ++ show y
 
 diffTerm :: Term -> Term
 diffTerm (Imm _) = Imm 0
