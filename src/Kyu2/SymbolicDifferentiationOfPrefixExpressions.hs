@@ -1,4 +1,4 @@
-module SymbolicDifferentiationOfPrefixExpressions (diff) where
+module Kyu2.SymbolicDifferentiationOfPrefixExpressions (diff) where
 
 import           Text.Parsec
 import qualified Text.Parsec.Token             as Tok

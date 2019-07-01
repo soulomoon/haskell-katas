@@ -31,6 +31,7 @@ import qualified Katas.Postfix
 import qualified Katas.InfiniteDigitalString
 import qualified Katas.Imperative
 import qualified Katas.Lisp
+import qualified Katas.SimpleSQLEngine
 
 
 main :: IO ()
@@ -38,6 +39,7 @@ main = hspec spec
 
 spec :: Spec
 spec = do 
+    describe "Katas.SimpleSQLEngine" Katas.SimpleSQLEngine.spec
     describe "Katas.Lisp" Katas.Imperative.spec
     describe "Katas.Imperative" Katas.Imperative.spec
     describe "Katas.InfiniteDigitalString" Katas.InfiniteDigitalString.spec
