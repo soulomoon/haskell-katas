@@ -13,7 +13,8 @@ import Data.List
 import Data.Either
 import Data.Maybe (fromMaybe)
 
-reservedNames = [ "=", "<=", ">=", ">", "<", "<>", "select", "from", "where", ".", "on" ]
+reservedNames = ["select", "from", "where", ".", "on" ]
+reservedOps = [ "=", "<=", ">=", ">", "<", "<>"]
 
 langDef :: Tok.LanguageDef ()
 langDef = Tok.LanguageDef
@@ -24,10 +25,10 @@ langDef = Tok.LanguageDef
   , Tok.nestedComments  = True
   , Tok.identStart      = letter
   , Tok.identLetter     = alphaNum <|> oneOf "_'"
-  , Tok.opStart         = oneOf ":!#$%&*+./<=>?@\\^|-~"
-  , Tok.opLetter        = oneOf ":!#$%&*+./<=>?@\\^|-~"
+  , Tok.opStart         = oneOf ":"
+  , Tok.opLetter        = oneOf ":"
   , Tok.reservedNames   = reservedNames 
-  , Tok.reservedOpNames = []
+  , Tok.reservedOpNames = reservedOps
   , Tok.caseSensitive   = True
   }
 type TableName = String
@@ -52,6 +53,7 @@ data Comparison = Lt | Eq | Gt | Lte | Gte | Ueq
 lexer :: Tok.TokenParser ()
 lexer = Tok.makeTokenParser langDef
 reserved = Tok.reserved lexer
+reservedOp = Tok.reservedOp lexer
 number = Tok.integer lexer
 symbol = Tok.symbol lexer
 identifier = Tok.identifier lexer
@@ -61,12 +63,12 @@ stringLiteral = Tok.stringLiteral lexer
 
 comparison :: Parser Comparison
 comparison = 
-  try (reserved "<>" >> return Ueq) <|>
-  (reserved "=" >> return Eq) <|>
-  try (reserved "<=" >> return Lte) <|>
-  try (reserved ">=" >> return Gte) <|>
-  (reserved ">" >> return Gt) <|>
-  (reserved "<" >> return Lt) 
+  try (reservedOp "<>" >> return Ueq) <|>
+  (reservedOp "=" >> return Eq) <|>
+  try (reservedOp "<=" >> return Lte) <|>
+  try (reservedOp ">=" >> return Gte) <|>
+  (reservedOp ">" >> return Gt) <|>
+  (reservedOp "<" >> return Lt) 
 
 quotations = Tok.lexeme lexer . between (symbol "'") (symbol "'")
 
