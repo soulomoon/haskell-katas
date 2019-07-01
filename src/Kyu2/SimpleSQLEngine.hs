@@ -61,12 +61,12 @@ stringLiteral = Tok.stringLiteral lexer
 
 comparison :: Parser Comparison
 comparison = 
-  try (symbol "<>" >> return Ueq) <|>
-  (symbol "=" >> return Eq) <|>
-  try (symbol "<=" >> return Lte) <|>
-  try (symbol ">=" >> return Gte) <|>
-  (symbol ">" >> return Gt) <|>
-  (symbol "<" >> return Lt) 
+  try (reserved "<>" >> return Ueq) <|>
+  (reserved "=" >> return Eq) <|>
+  try (reserved "<=" >> return Lte) <|>
+  try (reserved ">=" >> return Gte) <|>
+  (reserved ">" >> return Gt) <|>
+  (reserved "<" >> return Lt) 
 
 quotations = Tok.lexeme lexer . between (symbol "'") (symbol "'")
 
